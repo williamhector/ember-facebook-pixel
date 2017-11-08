@@ -7,23 +7,26 @@ export default Ember.Service.extend({
   id: null,
 
   isEnabled: Ember.computed.notEmpty('id'),
-
-  fbq(...args) {
+  
+  setup: Ember.on('init', function setup() {
     if (typeof fbq === 'undefined') {
       return null;
     }
-    return fbq(args);
-  },
-
-  setup: Ember.on('init', function setup() {
-    if (this.get('isEnabled')) {
-      this.fbq(INIT, this.id);
+    else {
+      if (this.get('isEnabled')) {
+        fbq(INIT, this.id);
+      }
     }
   }),
 
   track(event, params) {
-    if (this.get('isEnabled')) {
-      this.fbq('track', event, params);
+    if (typeof fbq === 'undefined') {
+      return null;
+    }
+    else {
+      if (this.get('isEnabled')) {
+        fbq('track', event, params);
+      }
     }
   },
 });
