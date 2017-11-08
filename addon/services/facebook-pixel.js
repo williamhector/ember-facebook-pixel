@@ -19,7 +19,7 @@ export default Ember.Service.extend({
     }
   }),
 
-  track(event, params) {
+  track: function(event, params) {
     if (typeof fbq === 'undefined') {
       return null;
     }
